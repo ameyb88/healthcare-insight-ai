@@ -1,0 +1,130 @@
+<div class="container">
+  <div class="analyzer-header fade-in">
+    <h1>🤖 AI Feedback Analyzer</h1>
+    <p class="text-muted">
+      Powered by OpenAI GPT-4 for real-time patient feedback analysis
+    </p>
+  </div>
+
+  <div class="analyzer-container">
+    <!-- Input Section -->
+    <div class="input-section glass-card fade-in" style="animation-delay: 0.2s">
+      <h3>📝 Enter Patient Feedback</h3>
+
+      <textarea
+        [formControl]="feedbackCtrl"
+        placeholder="Type or paste patient feedback here...
+
+Example: 'The nursing staff was incredibly compassionate during my stay. However, I had to wait 3 hours in the emergency room before being seen.'"
+        [disabled]="analyzing"
+      ></textarea>
+
+      <div class="input-actions">
+        <button
+          class="btn btn-secondary"
+          (click)="loadSample()"
+          [disabled]="analyzing"
+        >
+          Load Sample
+        </button>
+        <button
+          class="btn btn-primary"
+          (click)="analyzeFeedback()"
+          [disabled]="!feedbackCtrl.value?.trim() || analyzing"
+        >
+          <span *ngIf="!analyzing">🔍 Analyze with AI</span>
+          <span *ngIf="analyzing" class="loading"></span>
+          <span *ngIf="analyzing">Analyzing...</span>
+        </button>
+      </div>
+
+      <div *ngIf="analyzing" class="analyzing-status">
+        <div class="pulse-dot"></div>
+        <p>AI is analyzing the feedback... This may take a few seconds.</p>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div *ngIf="analysis" class="results-section fade-in">
+      <div class="result-card glass-card">
+        <div class="result-header">
+          <h3>⚠️ Risk Assessment</h3>
+          <span class="badge" [ngClass]="getRiskClass(analysis.riskLevel)">
+            {{ analysis.riskLevel }}
+          </span>
+        </div>
+        <div class="risk-meter">
+          <div
+            class="risk-bar"
+            [style.width]="getRiskPercentage(analysis.riskLevel)"
+          ></div>
+        </div>
+        <p class="result-description">{{ analysis.urgency }}</p>
+      </div>
+
+      <div class="result-card glass-card">
+        <div class="result-header">
+          <h3>😊 Sentiment Score</h3>
+          <span class="sentiment-score">{{ analysis.sentimentScore }}/100</span>
+        </div>
+        <div class="sentiment-meter">
+          <div
+            class="sentiment-bar"
+            [style.width.%]="analysis.sentimentScore"
+          ></div>
+        </div>
+        <p class="result-description">
+          {{ getSentimentLabel(analysis.sentimentScore) }}
+        </p>
+      </div>
+
+      <div class="result-card glass-card">
+        <h3>🏷️ Category</h3>
+        <div class="category-tag">{{ analysis.category }}</div>
+      </div>
+
+      <div class="result-card glass-card summary-card">
+        <h3>📄 AI Summary</h3>
+        <p class="summary-text">{{ analysis.summary }}</p>
+      </div>
+
+      <div class="result-card glass-card">
+        <h3>🔍 Key Issues Identified</h3>
+        <ul class="issues-list">
+          <li *ngFor="let issue of analysis.keyIssues" class="issue-item">
+            <span class="issue-icon">⚡</span>
+            {{ issue }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="result-card glass-card">
+        <h3>✅ Recommended Actions</h3>
+        <ol class="actions-list">
+          <li
+            *ngFor="let action of analysis.recommendedActions"
+            class="action-item"
+          >
+            {{ action }}
+          </li>
+        </ol>
+      </div>
+
+      <div class="export-section">
+        <button class="btn btn-primary" (click)="exportReport()">
+          📥 Export Analysis Report
+        </button>
+        <button class="btn btn-secondary" (click)="reset()">
+          🔄 Analyze Another
+        </button>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="error-card glass-card">
+      <h3>❌ Analysis Error</h3>
+      <p>{{ error }}</p>
+      <button class="btn btn-secondary" (click)="reset()">Try Again</button>
+    </div>
+  </div>
+</div>
