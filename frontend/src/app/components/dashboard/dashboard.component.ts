@@ -342,7 +342,7 @@ export class DashboardComponent implements OnInit {
     this.apiService.getFeedback().subscribe({
       next: (response) => {
         this.feedbackList = response.data;
-        console.log('this.feedbackList', this.feedbackList);
+        console.log('this.feedbackList **', this.feedbackList);
         this.loading = false;
       },
       error: (error) => {
