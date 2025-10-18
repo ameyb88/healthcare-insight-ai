@@ -1,0 +1,24 @@
+[
+  {
+    "id": "rule-1",
+    "name": "ER spike high/critical",
+    "enabled": true,
+    "match": {
+      "category": "Emergency Department",
+      "minHighOrCritical": 3,
+      "windowHours": 24
+    },
+    "actions": [{ "type": "alert", "channel": "console", "severity": "high" }],
+    "requireApproval": false
+  },
+  {
+    "id": "rule-2",
+    "name": "Avg sentiment drop",
+    "enabled": true,
+    "match": { "avgSentimentBelow": 55, "windowHours": 24 },
+    "actions": [
+      { "type": "alert", "channel": "console", "severity": "medium" }
+    ],
+    "requireApproval": false
+  }
+]
