@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "healthcare-insight-ai:build:production"
+              "buildTarget": "healthcare-insight-ai:build:production"
             },
             "development": {
-              "browserTarget": "healthcare-insight-ai:build:development"
+              "buildTarget": "healthcare-insight-ai:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "healthcare-insight-ai:build"
+            "buildTarget": "healthcare-insight-ai:build"
           }
         },
         "test": {
