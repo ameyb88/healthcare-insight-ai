@@ -75,4 +75,13 @@ export class ApiService {
   getSummary(): Observable<any> {
     return this.http.get(`${this.baseUrl}/analysis/summary`);
   }
+
+  getAgentStatus() {
+    return this.http.get<{ data: { alerts: any[] } }>(
+      `${this.baseUrl}/agent/status`
+    );
+  }
+  runAgentNow() {
+    return this.http.post<{ ok: boolean }>(`${this.baseUrl}/agent/run`, {});
+  }
 }
